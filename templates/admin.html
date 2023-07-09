@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block title %}Run{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <h2 style="text-align: center">USERS</h2>
+            {% if users|length < 1 %}
+            <h4 style="text-align: center">Table 'users' is empty!</h4>
+            {% else %}
+            <table class="table table-hover table-bordered table-sm">
+                <thead class="thead-dark">
+                <tr>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">username</th>
+                    <th class="text-center">USER TYPE</th>
+                    <th class="text-center">FIRST NAME</th>
+                    <th class="text-center">LAST NAME</th>
+                    <th class="text-center">EMAIL</th>
+                    <!-- <th class="text-center">PASSWORD</th> -->
+                    <th class="text-center">MAX RENT</th>
+                </tr>
+                </thead>
+                {% for user in users %}
+                    <tr>
+                        <td>{{user[0]}}</td>
+                        <td>{{user[1]}}</td>
+                        <td>{{user[2]}}</td>
+                        <td>{{user[3]}}</td>
+                        <td>{{user[4]}}</td>
+                        <td>{{user[5]}}</td>
+                        <!-- <td>{{user[6]}}</td> -->
+                        <td>{{user[7]}}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+{% endblock %}

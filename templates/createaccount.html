@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block title %}Registration{% endblock %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">
+      <form method="POST">
+        <h3 align="center">New User Registration</h3>
+        <div class="form-group">
+          <label for="type">Please select the account type</label><br>
+            <input type="radio" id="customer" name="user_type" value="customer" checked>
+            <label for="customer">Customer</label>
+            <input type="radio" id="owner" name="user_type" value="owner">
+            <label for="owner">Owner</label>
+            <input type="radio" id="agent" name="user_type" value="agent">
+            <label for="agent">Agent</label><br>
+
+          
+        </div>
+        <div>
+          <label for="username">UserName</label>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            name="username"
+            placeholder="Type in your username"
+          />
+        </div>
+        <div>
+          <label for="max_rent">max rent</label>
+        <input
+            type="text"
+            class="form-control"
+            id="max_rent"
+            name="max_rent"
+            placeholder="Type in your max rent"
+          />
+        <div>
+        <label for="firstname">First Name</label>
+        <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            placeholder="Type in your first name"
+          />
+        </div>
+        <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="surname"
+              name="surname"
+              placeholder="Type in your last name"
+            />
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              placeholder="Type in your email address"
+            />
+        </div>
+        <div class="form-group">
+          <label for="email">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            placeholder="Type in a password"
+          />
+      </div>
+      <div class="form-group">
+            <label for="email">Confirm Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="confirm"
+              name="confirm"
+              placeholder="Confirm the password"
+            />
+        </div>
+        <br />
+        <button type="submit" class="btn-primary btn-outline-primary">Submit</button>
+      </form>
+    </div>
+    <div class="col-3"></div>
+</div>
+
+{% endblock %}

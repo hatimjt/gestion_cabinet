@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block title %}Registration{% endblock %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">
+      <form method="POST">
+        <h3 align="center">User Update</h3>
+        <div class="form-group">
+          <label for="type">Please select the account type</label><br>
+            <input type="radio" id="customer" name="user_type" value="customer" checked>
+            <label for="customer">Customer</label>
+            <input type="radio" id="owner" name="user_type" value="owner">
+            <label for="owner">Owner</label>
+            <input type="radio" id="agent" name="user_type" value="agent">
+            <label for="agent">Agent</label><br>
+
+
+        </div>
+
+        <div class="form-group">
+          <label for="name">First Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            placeholder="{{old_name}}"
+            value="{{old_name}}"
+            readonly/>
+
+
+        </div>
+        <div class="form-group">
+          <label for="username">UserName</label>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            name="username"
+            placeholder="{{old_username}}"
+            value="{{old_username}}"
+            readonly/>
+      </div>
+      <div class="form-group">
+        <label for="max_rent">max rent</label>
+        <input
+          type="text"
+          class="form-control"
+          id="max_rent"
+          name="max_rent"
+          placeholder="{{old_max_rent}}"
+          value="{{old_max_rent}}"
+          readonly/>
+    </div>
+        <div class="form-group">
+            <label for="surname">Last Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="surname"
+              name="surname"
+              placeholder="{{old_surname}}"
+              value="{{old_surname}}"
+              readonly/>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              placeholder="{{old_email}}"
+              />
+        </div>
+        <div class="form-group">
+          <label for="email">New Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            placeholder="Type in the new a password"
+          />
+      </div>
+      <div class="form-group">
+            <label for="email">Confirm the new Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="confirm"
+              name="confirm"
+              placeholder="Confirm the new password"
+            />
+        </div>
+        <br />
+        <button href="viewaccount" type="submit" class="btn-primary btn-outline-primary">Update Account</button>
+
+      </form>
+    </div>
+    <div class="col-3"></div>
+</div>
+
+{% endblock %}

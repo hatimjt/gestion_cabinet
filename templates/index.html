@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block title %}Homepage{% endblock %}
+
+{% block body %}
+
+
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6">
+            Welcome to the Online Property Rental System!
+        </div>
+        <div class="col-3"></div>
+    </div>
+
+    {% if message %}
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4 noerror">{{message}}</div>
+        <div class="col-4"></div>
+    </div>
+    {% endif %}
+
+    {% if message_tmr|length > 1 %}
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4 error">{{message_tmr}}</div>
+        <div class="col-4"></div>
+    </div>
+    {% endif %}
+
+{% endblock %}

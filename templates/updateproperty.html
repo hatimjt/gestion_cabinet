@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block title %}Registration{% endblock %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">
+      <form method="POST">
+        <h3 align="center">Property Update</h3>
+
+        <div class="form-group">
+          
+
+          <label for="description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            id="description"
+            name="description"
+            placeholder="{{old_description}}"
+          />
+        </div>
+        <div class="form-group">
+            <label for="address">Address</label>
+            <input
+              type="text"
+              class="form-control"
+              id="address"
+              name="address"
+              placeholder="{{old_address}}"
+            />
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              placeholder="{{old_email}}"
+            />
+        </div>
+        <div class="form-group">
+          <label for="owner">owner</label>
+          <input
+            type="owner"
+            class="form-control"
+            id="owner"
+            name="owner"
+            placeholder="{{old_owner}}"
+          />
+      </div>
+      <div class="form-group">
+        <label for="phone">phone</label>
+        <input
+          type="phone"
+          class="form-control"
+          id="phone"
+          name="phone"
+          placeholder="{{old_phone}}"
+        />
+      </div>
+      <div class="form-group">
+        <label for="price">price</label>
+        <input
+          type="price"
+          class="form-control"
+          id="price"
+          name="price"
+          placeholder="{{old_price}}"
+        />
+      </div>
+      <label for="type">Is the property pet friendly?</label><br>
+            <input type="radio" id="yes" name="pet_friendly" value="yes" checked>
+            <label for="yes">Yes</label>
+            <input type="radio" id="no" name="pet_friendly" value="no">
+            <label for="no">No</label>
+        <br />
+        <button type="submit" class="btn-primary btn-outline-primary">Submit</button>
+      </form>
+    </div>
+    <div class="col-3"></div>
+</div>
+
+{% endblock %}
