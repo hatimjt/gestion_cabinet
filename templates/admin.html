@@ -24,7 +24,7 @@
                     <th class="text-center">LAST NAME</th>
                     <th class="text-center">EMAIL</th>
                     <!-- <th class="text-center">PASSWORD</th> -->
-                    <th class="text-center">MAX RENT</th>
+                    <th class="text-center">actions</th>
                 </tr>
                 </thead>
                 {% for user in users %}
@@ -36,7 +36,12 @@
                         <td>{{user[4]}}</td>
                         <td>{{user[5]}}</td>
                         <!-- <td>{{user[6]}}</td> -->
-                        <td>{{user[7]}}</td>
+                        <td>
+                            <table>
+                                <td> <a href="/updateaccount/{{user[0]}}">update</a> </td>
+                                <td> <a href="/deleteaccount/{{user[0]}}">delete</a> </td>
+                            </table>
+                        </td>
                     </tr>
                 {% endfor %}
             </table>

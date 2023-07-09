@@ -316,24 +316,25 @@ def viewaccount():
         flash('Please login first!', category='error')
     return render_template('login.html')
 
-@app.route('/updateaccount', methods = ['GET', 'POST'])
-def updateaccount():
+@app.route('/updateaccount/<id>', methods = ['GET', 'POST'])
+def updateaccount(id):
     if current_user.is_authenticated :
         if current_user.user_type == "admin":
             form = AccountForm(request.form)
+            user_selected = Users.query.get(id)
             if request.method == 'POST' and form.validate():
-                user = Users.query.get(current_user.id)
-                # user.username = form.username.data
-                # user.user_type=form.user_type.data
-                # user.name=form.name.data
-                # user.surname=form.surname.data
-                # user.max_rent=form.max_rent.data
+                user = Users.query.get(id)
+                user.username = form.username.data
+                user.user_type=form.user_type.data
+                user.name=form.name.data
+                user.surname=form.surname.data
+                user.max_rent=form.max_rent.data
 
-                user.username = current_user.username
-                user.user_type=current_user.user_type
-                user.name=current_user.name
-                user.surname=current_user.surname
-                user.max_rent=current_user.max_rent
+                # user.username = current_user.username
+                # user.user_type= current_user.user_type
+                # user.name= current_user.name
+                # user.surname= current_user.surname
+                # user.max_rent= current_user.max_rent
 
                 user.email=form.email.data
                 user.password=generate_password_hash(form.password.data, method='sha256')
@@ -342,10 +343,10 @@ def updateaccount():
                 flash('Thanks for updating')
                 # return redirect(url_for('login'))
                 # return render_template('createaccount.html', form=form)
-                return redirect('/viewaccount')
+                return redirect('/admin')
             elif request.method == 'POST' and not form.validate():
                 flash('Input error.. try again!', category='error')
-            return render_template('updateaccount.html', form=form, old_username=current_user.username, old_max_rent=current_user.max_rent, old_name=current_user.name, old_email=current_user.email, old_surname=current_user.surname, old_user_type=current_user.user_type)
+            return render_template('updateaccount.html', form=form, old_username=user_selected.username, old_max_rent=user_selected.max_rent, old_name=user_selected.name, old_email=user_selected.email, old_surname=user_selected.surname, old_user_type=user_selected.user_type)
             # return render_template('updateaccount.html', form=form, old_email=current_user.email)
         else:
             flash('unauthoized access', category='error')
@@ -354,26 +355,30 @@ def updateaccount():
         flash('To edit an account login first.', category='error')
         return redirect('/login')
 
-@app.route('/deleteaccount', methods = ['GET','POST'])
-def deleteaccount():
+@app.route('/deleteaccount/<id>', methods = ['GET','POST'])
+def deleteaccount(id):
     if current_user.is_authenticated:
-        user = Users.query.get(current_user.id)
-        # user.user_type=form.user_type.data
-        # user.name=form.name.data
-        # user.surname=form.surname.data
-        # user.email=form.email.data
-        # user.password=generate_password_hash(form.password.data, method='sha256')
-        # user.max_rent='False'
-        db.session.delete(user)
-        db.session.commit()
-        # do not log in automatically
-        flash('Your account was successfully deleted')
-        # return redirect(url_for('login'))
-        # return render_template('createaccount.html', form=form)
-        return redirect('/')
+        if current_user.user_type == "admin":
+            user = Users.query.get(id)
+            # user.user_type=form.user_type.data
+            # user.name=form.name.data
+            # user.surname=form.surname.data
+            # user.email=form.email.data
+            # user.password=generate_password_hash(form.password.data, method='sha256')
+            # user.max_rent='False'
+            db.session.delete(user)
+            db.session.commit()
+            # do not log in automatically
+            flash('Your account was successfully deleted')
+            # return redirect(url_for('login'))
+            # return render_template('createaccount.html', form=form)
+            return redirect('/admin')
+        else:
+            flash('unauthoized access', category='error')
+            return redirect('/')
     else:
         flash('To delete an account login first.', category='error')
-        return redirect('/')
+        return redirect('/login')
 
 #Properties
 
