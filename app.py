@@ -47,17 +47,17 @@ class Users(db.Model, UserMixin):
     surname = db.Column(db.String(255), unique=False, nullable=False)
     email = db.Column(db.String(255), unique=False, nullable=False)
     password = db.Column(db.String(255), unique=False, nullable=False)
-    max_rent = db.Column(db.String(255), unique=False, nullable=False)
+    allocation_max = db.Column(db.String(255), unique=False, nullable=False)
 
 
-class VisitingList(db.Model):
+class Facture(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     userId = db.Column(db.Integer, db.ForeignKey('users.id', onupdate="CASCADE", ondelete="CASCADE"))
     # userId = db.Column(db.Integer, unique=False, nullable=False)
-    propertiesList = db.Column(db.PickleType)
+    servicesList = db.Column(db.PickleType)
 
 
-class Properties(db.Model):
+class Services(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(255), unique=False, nullable=False)
     address = db.Column(db.String(255), unique=False, nullable=False)
@@ -65,7 +65,7 @@ class Properties(db.Model):
     email = db.Column(db.String(255), unique=False, nullable=False)
     phone = db.Column(db.String(255), unique=False, nullable=False)
     price = db.Column(db.String(255), unique=False, nullable=False)
-    pet_friendly = db.Column(db.String(255), unique=False, nullable=False)
+    ramed = db.Column(db.String(255), unique=False, nullable=False)
 
 
 #############################################################
@@ -88,19 +88,19 @@ class AccountForm(Form):
     password = PasswordField('New Password', [validators.DataRequired(), validators.EqualTo('confirm', message='Passwords must match')])
     confirm  = PasswordField('Repeat Password')
     user_type = RadioField('user_type', choices=[('customer','Customer'),('owner','Owner'),('agent','Agent')])
-    max_rent = StringField('maxRent', [validators.Length(min=1, max=10)])
+    allocation_max = StringField('maxRent', [validators.Length(min=1, max=10)])
 
     # validators.DataRequired() / InputRequired()
 
 
-class PropertyForm(Form):
+class ServiceForm(Form):
     description = StringField('description', [validators.Length(min=1, max=50)])
     address = StringField('address', [validators.Length(min=1, max=50)])
     owner = StringField('owner', [validators.Length(min=1, max=50)])
     email = StringField('email', [validators.Length(min=1, max=50)])
     phone = StringField('phone', [validators.Length(min=1, max=50)])
     price = StringField('price', [validators.Length(min=1, max=50)])
-    pet_friendly = RadioField('pet_friendly', choices=[('yes','Yes'),('no','No')])
+    ramed = RadioField('ramed', choices=[('yes','Yes'),('no','No')])
     # validators.DataRequired() / InputRequired()
 
 
@@ -163,18 +163,18 @@ def index():
 
 
 
-        admin = Users(user_type='admin', username = 'admin', name='admin', surname='admin', email='admin@cabmed', password=generate_password_hash("password", method='sha256'), max_rent='1000$')
-        adminVL = VisitingList(userId= 1, propertiesList=[] )
-        sparky = Users(user_type='Agent', username = 'sparky', name='sparky', surname='onlive', email='sparky@cabmed', password=generate_password_hash("password", method='sha256'), max_rent='1000$')
-        sparkyVL = VisitingList(userId= 2, propertiesList=[] )
-        tuta = Users(user_type='Owner', username='tuta', name='tuta', surname='nota', email='tuta@cabmed', password=generate_password_hash("password", method='sha256'), max_rent='1000$')
-        tutaVL = VisitingList(userId= 3, propertiesList=[] )
-        jado = Users(user_type='Customer', username='jado', name='jado', surname='lpikos', email='jado@cabmed', password=generate_password_hash("password", method='sha256'), max_rent='1000$')
-        jadoVL = VisitingList(userId= 4, propertiesList=[] )
-        oxy = Users(user_type='Owner', username='oxy', name='oxy', surname='doxy', email='oxy@cabmed', password=generate_password_hash("password", method='sha256'), max_rent='1000$')
-        oxyVL = VisitingList(userId= 5, propertiesList=[] )
-        hatim = Users(user_type='Customer', username='hatim', name='hatim', surname='jt', email='hatim@cabmed', password=generate_password_hash("password", method='sha256'), max_rent='1000$')
-        hatimVL = VisitingList(userId= 6, propertiesList=[1,2] )
+        admin = Users(user_type='admin', username = 'admin', name='admin', surname='admin', email='admin@cabmed', password=generate_password_hash("password", method='sha256'), allocation_max='1000$')
+        adminVL = Facture(userId= 1, servicesList=[] )
+        sparky = Users(user_type='Agent', username = 'sparky', name='sparky', surname='onlive', email='sparky@cabmed', password=generate_password_hash("password", method='sha256'), allocation_max='1000$')
+        sparkyVL = Facture(userId= 2, servicesList=[] )
+        tuta = Users(user_type='Owner', username='tuta', name='tuta', surname='nota', email='tuta@cabmed', password=generate_password_hash("password", method='sha256'), allocation_max='1000$')
+        tutaVL = Facture(userId= 3, servicesList=[] )
+        jado = Users(user_type='Customer', username='jado', name='jado', surname='lpikos', email='jado@cabmed', password=generate_password_hash("password", method='sha256'), allocation_max='1000$')
+        jadoVL = Facture(userId= 4, servicesList=[] )
+        oxy = Users(user_type='Owner', username='oxy', name='oxy', surname='doxy', email='oxy@cabmed', password=generate_password_hash("password", method='sha256'), allocation_max='1000$')
+        oxyVL = Facture(userId= 5, servicesList=[] )
+        hatim = Users(user_type='Customer', username='hatim', name='hatim', surname='jt', email='hatim@cabmed', password=generate_password_hash("password", method='sha256'), allocation_max='1000$')
+        hatimVL = Facture(userId= 6, servicesList=[1,2] )
 
         db.session.add(admin)
         db.session.add(sparky)
@@ -193,37 +193,37 @@ def index():
         db.session.commit()
 
 
-        propertya = Properties(description='consultation', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662485142', price='200', pet_friendly="yes")
-        propertyb = Properties(description='doliprane', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154723', price='20', pet_friendly="no")
-        propertyc = Properties(description='x-ray', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154724', price='720', pet_friendly="yes")
-        propertyd = Properties(description='analyse sanguine', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154726', price='1480', pet_friendly="yes")
-        propertye = Properties(description='rappel de controle', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154726', price='0', pet_friendly="yes")
-        propertyf = Properties(description='kenta', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154726', price='100', pet_friendly="yes")
-        propertyg = Properties(description='analyse sanguine', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154726', price='1480', pet_friendly="yes")
-        propertyh = Properties(description='analyse sanguine', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154726', price='1480', pet_friendly="yes")
+        servicea = Services(description='consultation', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662485142', price='200', ramed="yes")
+        serviceb = Services(description='doliprane', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154723', price='20', ramed="no")
+        servicec = Services(description='x-ray', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154724', price='720', ramed="yes")
+        serviced = Services(description='analyse sanguine', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154726', price='1480', ramed="yes")
+        servicee = Services(description='rappel de controle', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154726', price='0', ramed="yes")
+        servicef = Services(description='kenta', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154726', price='100', ramed="yes")
+        serviceg = Services(description='analyse sanguine', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154726', price='1480', ramed="yes")
+        serviceh = Services(description='analyse sanguine', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154726', price='1480', ramed="yes")
 
-        db.session.add(propertya)
-        db.session.add(propertyb)
-        db.session.add(propertyc)
-        db.session.add(propertyd)
-        db.session.add(propertye)
-        db.session.add(propertyf)
-        db.session.add(propertyg)
-        db.session.add(propertyh)
+        db.session.add(servicea)
+        db.session.add(serviceb)
+        db.session.add(servicec)
+        db.session.add(serviced)
+        db.session.add(servicee)
+        db.session.add(servicef)
+        db.session.add(serviceg)
+        db.session.add(serviceh)
         db.session.commit()
 
 
-        # hatimVL = VisitingList(userId= 6, propertiesList=[1,2] )
+        # hatimVL = Facture(userId= 6, servicesList=[1,2] )
         # print(hatimVL)
         # print("the user ID is: ", hatimVL.userId)
-        # hatimVL.propertiesList.append(4)
-        # print("the properties list is: ", hatimVL.propertiesList)
+        # hatimVL.servicesList.append(4)
+        # print("the services list is: ", hatimVL.servicesList)
         # db.session.add(hatimVL)
         # db.session.commit()
 
 
 
-        print("property committed")
+        print("service committed")
 
         # do not log in automatically
         logout_user()
@@ -300,10 +300,10 @@ def createaccount():
     else:
         form = AccountForm(request.form)
         if request.method == 'POST' and form.validate():
-            user = Users(user_type=form.user_type.data, username=form.username.data, max_rent=form.max_rent.data, name=form.name.data, surname=form.surname.data, email=form.email.data, password=generate_password_hash(form.password.data, method='sha256'))
+            user = Users(user_type=form.user_type.data, username=form.username.data, allocation_max=form.allocation_max.data, name=form.name.data, surname=form.surname.data, email=form.email.data, password=generate_password_hash(form.password.data, method='sha256'))
             db.session.add(user)
             db.session.commit()
-            newUserVL = VisitingList(userId= user.id, propertiesList=[] )
+            newUserVL = Facture(userId= user.id, servicesList=[] )
 
             # do not log in automatically
             logout_user()
@@ -336,13 +336,13 @@ def updateaccount(id):
                 user.user_type=form.user_type.data
                 user.name=form.name.data
                 user.surname=form.surname.data
-                user.max_rent=form.max_rent.data
+                user.allocation_max=form.allocation_max.data
 
                 # user.username = current_user.username
                 # user.user_type= current_user.user_type
                 # user.name= current_user.name
                 # user.surname= current_user.surname
-                # user.max_rent= current_user.max_rent
+                # user.allocation_max= current_user.allocation_max
 
                 user.email=form.email.data
                 user.password=generate_password_hash(form.password.data, method='sha256')
@@ -354,7 +354,7 @@ def updateaccount(id):
                 return redirect('/admin')
             elif request.method == 'POST' and not form.validate():
                 flash('Input error.. try again!', category='error')
-            return render_template('updateaccount.html', form=form, old_username=user_selected.username, old_max_rent=user_selected.max_rent, old_name=user_selected.name, old_email=user_selected.email, old_surname=user_selected.surname, old_user_type=user_selected.user_type)
+            return render_template('updateaccount.html', form=form, old_username=user_selected.username, old_allocation_max=user_selected.allocation_max, old_name=user_selected.name, old_email=user_selected.email, old_surname=user_selected.surname, old_user_type=user_selected.user_type)
             # return render_template('updateaccount.html', form=form, old_email=current_user.email)
         else:
             flash('unauthoized access', category='error')
@@ -373,7 +373,7 @@ def deleteaccount(id):
             # user.surname=form.surname.data
             # user.email=form.email.data
             # user.password=generate_password_hash(form.password.data, method='sha256')
-            # user.max_rent='False'
+            # user.allocation_max='False'
             db.session.delete(user)
             db.session.commit()
             # do not log in automatically
@@ -388,15 +388,15 @@ def deleteaccount(id):
         flash('To delete an account login first.', category='error')
         return redirect('/login')
 
-#Properties
+#Services
 
-@app.route('/property/<id>', methods = ['GET', 'POST'])
-def property(id):
-    propertya = Properties.query.get(id)
+@app.route('/service/<id>', methods = ['GET', 'POST'])
+def service(id):
+    servicea = Services.query.get(id)
 
-    response = db.session.execute(text('SELECT * FROM properties;'))
+    response = db.session.execute(text('SELECT * FROM services;'))
     # print("the response hia:")
-    print(propertya.address)
+    print(servicea.address)
     # for r in response:
     #     print("l item d response houa")
     #     print(r)
@@ -404,53 +404,53 @@ def property(id):
     #     row = list()
     #     for x in range(len(r)):
     #         row.append(r[x])
-    #     properties.append(row)
-    return render_template('property.html', id=propertya.id, description=propertya.description, address=propertya.address,  owner=propertya.owner,  email=propertya.email,  phone=propertya.phone, price=propertya.price, pet_friendly=propertya.pet_friendly)
+    #     services.append(row)
+    return render_template('service.html', id=servicea.id, description=servicea.description, address=servicea.address,  owner=servicea.owner,  email=servicea.email,  phone=servicea.phone, price=servicea.price, ramed=servicea.ramed)
 
-@app.route('/createproperty', methods = ['GET', 'POST'])
-def createproperty():
-    form = PropertyForm(request.form)
+@app.route('/createservice', methods = ['GET', 'POST'])
+def createservice():
+    form = ServiceForm(request.form)
     if request.method == 'POST' and form.validate():
-        property = Properties(description=form.description.data, address=form.address.data,  owner=form.owner.data,  email=form.email.data,  phone=form.phone.data, price=form.price.data, pet_friendly=form.pet_friendly.data)
-        db.session.add(property)
+        service = Services(description=form.description.data, address=form.address.data,  owner=form.owner.data,  email=form.email.data,  phone=form.phone.data, price=form.price.data, ramed=form.ramed.data)
+        db.session.add(service)
         db.session.commit()
         # do not log in automatically
-        flash('Thanks for adding the property')
+        flash('Thanks for adding the service')
         # return redirect(url_for('login'))
         # return render_template('createaccount.html', form=form)
-        return redirect('/viewproperties')
+        return redirect('/viewservices')
     elif request.method == 'POST' and not form.validate():
         flash('Input error.. try again!', category='error')
-    return render_template('createproperty.html', form=form)
+    return render_template('createservice.html', form=form)
 
-@app.route('/updateproperty/<id>', methods = ['GET', 'POST'])
-def updateproperty(id):
-    form = PropertyForm(request.form)
-    propertya = Properties.query.get(id)
+@app.route('/updateservice/<id>', methods = ['GET', 'POST'])
+def updateservice(id):
+    form = ServiceForm(request.form)
+    servicea = Services.query.get(id)
 
     if request.method == 'POST' and form.validate():
-        propertya.description=form.description.data
-        propertya.address=form.address.data
-        propertya.owner=form.owner.data
-        propertya.email=form.email.data
-        propertya.phone=form.phone.data
-        propertya.price=form.price.data
-        propertya.pet_friendly=form.pet_friendly.data
+        servicea.description=form.description.data
+        servicea.address=form.address.data
+        servicea.owner=form.owner.data
+        servicea.email=form.email.data
+        servicea.phone=form.phone.data
+        servicea.price=form.price.data
+        servicea.ramed=form.ramed.data
         db.session.commit()
         # do not log in automatically
-        flash('Thanks for updating the property')
+        flash('Thanks for updating the service')
         # return redirect(url_for('login'))
         # return render_template('createaccount.html', form=form)
         return redirect('/viewaccount')
     elif request.method == 'POST' and not form.validate():
         flash('Input error.. try again!', category='error')
-    return render_template('updateproperty.html', form=form,  old_id=propertya.id, old_description=propertya.description, old_address=propertya.address,  old_owner=propertya.owner,  old_email=propertya.email,  old_phone=propertya.phone, old_price=propertya.price, old_pet_friendly=propertya.pet_friendly)
+    return render_template('updateservice.html', form=form,  old_id=servicea.id, old_description=servicea.description, old_address=servicea.address,  old_owner=servicea.owner,  old_email=servicea.email,  old_phone=servicea.phone, old_price=servicea.price, old_ramed=servicea.ramed)
 
 
-@app.route('/viewproperties', methods = ['GET'])
-def viewproperties():
-    properties = list()
-    response = db.session.execute(text('SELECT * FROM properties;'))
+@app.route('/viewservices', methods = ['GET'])
+def viewservices():
+    services = list()
+    response = db.session.execute(text('SELECT * FROM services;'))
     print("the response hia:")
     print(response)
     for record in response:
@@ -460,20 +460,20 @@ def viewproperties():
         # row = list()
         # for x in range(len(r)):
         #     row.append(r[xI)
-        properties.append(record)
-    return render_template('viewproperties.html', properties=properties)
+        services.append(record)
+    return render_template('viewservices.html', services=services)
     # if current_user.is_authenticated:
-    #     return render_template('viewproperty.html', property=)
+    #     return render_template('viewservice.html', service=)
     # else:
     #     print('Please login first!')
     #     flash('Please login first!', category='error')
     # return render_template('login.html')
 
-# @app.route('/viewpropertiesbylocation/<location>', methods = ['GET'])
-# def viewpropertiesbylocation(location):
-#     properties = list()
-#     response = Properties.query.filter(Properties.address.contains(location))
-#     # response = db.session.execute('SELECT * FROM properties;')
+# @app.route('/viewservicesbylocation/<location>', methods = ['GET'])
+# def viewservicesbylocation(location):
+#     services = list()
+#     response = Services.query.filter(Services.address.contains(location))
+#     # response = db.session.execute('SELECT * FROM services;')
 #     print("the response hia:")
 #     print(response)
 
@@ -481,56 +481,56 @@ def viewproperties():
 #         print("l item d response houa")
 #         print(record)
 #         print(record.address)
-#         properties.append(record)
-#     #     properties.append(record)
+#         services.append(record)
+#     #     services.append(record)
 #         # row = list()
 #         # for x in range(len(record)):
 #         #     row.append(record[x])
-#         # properties.append(row)
-#         # print(properties)
-#     if len(properties)==0:
-#         flash('No properties found at this location.', category='error')
-#     return render_template('viewproperties.html', properties=properties)
+#         # services.append(row)
+#         # print(services)
+#     if len(services)==0:
+#         flash('No services found at this location.', category='error')
+#     return render_template('viewservices.html', services=services)
 #     # if current_user.is_authenticated:
-#     #     return render_template('viewproperty.html', property=)
+#     #     return render_template('viewservice.html', service=)
 #     # else:
 #     #     print('Please login first!')
 #     #     flash('Please login first!', category='error')
 #     # return render_template('login.html')
 
 
-@app.route('/deleteproperty/<id>', methods = ['GET', 'POST'])
-def deleteproperty(id):
-    propertya = Properties.query.get(id)
-    db.session.delete(propertya)
+@app.route('/deleteservice/<id>', methods = ['GET', 'POST'])
+def deleteservice(id):
+    servicea = Services.query.get(id)
+    db.session.delete(servicea)
     db.session.commit()
     # do not log in automatically
-    flash('the property was successfully deleted')
+    flash('the service was successfully deleted')
     # return redirect(url_for('login'))
     # return render_template('createaccount.html', form=form)
     return redirect('/')
 
 
 
-@app.route('/viewvisitinglist/<id>', methods = ['GET', 'POST'])
-def viewvisitinglist(id):
+@app.route('/viewfacture/<id>', methods = ['GET', 'POST'])
+def viewfacture(id):
 
-    response = VisitingList.query.filter_by(userId=id).first()
+    response = Facture.query.filter_by(userId=id).first()
     chkoun_hada = Users.query.get(id)
     print("chkoun hada? ")
     print(chkoun_hada.name)
 
     print("the response hia:")
     print(response)
-    print(response.propertiesList)
-    visitingList = list()
+    print(response.servicesList)
+    faCture = list()
     print("the response hia:")
     print(response)
-    for propertyId in response.propertiesList:
-        print(propertyId)
-        visitingList.append(Properties.query.get(propertyId))
-    print(visitingList)
-    return render_template('viewproperties.html', properties=visitingList)
+    for serviceId in response.servicesList:
+        print(serviceId)
+        faCture.append(Services.query.get(serviceId))
+    print(faCture)
+    return render_template('viewservices.html', services=faCture)
     # for r in response:
     #     print("l item d response houa")
     #     print(r)
@@ -538,40 +538,40 @@ def viewvisitinglist(id):
     #     row = list()
     #     for x in range(len(r)):
     #         row.append(r[x])
-    #     properties.append(row)
+    #     services.append(row)
     # return redirect('/')
 
 
-@app.route('/addtovisitinglist/<id>', methods = ['GET', 'POST'])
-def addtovisitinglist(id):
+@app.route('/addtofacture/<id>', methods = ['GET', 'POST'])
+def addtofacture(id):
 
-    current_user_list = VisitingList.query.get(current_user.id)
+    current_user_list = Facture.query.get(current_user.id)
     print(current_user_list)
     print("list before appending")
-    print(current_user_list.propertiesList)
+    print(current_user_list.servicesList)
     print("list after copying")
     tmp = []
-    for propertyId in current_user_list.propertiesList:
-        tmp.append(propertyId)
+    for serviceId in current_user_list.servicesList:
+        tmp.append(serviceId)
     print(tmp)
     print("list after appending")
 
     tmp.append(int(id))
     print(tmp)
-    current_user_list.propertiesList = tmp
-    print(current_user_list.propertiesList)
+    current_user_list.servicesList = tmp
+    print(current_user_list.servicesList)
     db.session.commit()
 
     # print("the response hia:")
-    # print(response.propertiesList)
-    # visitingList = list()
+    # print(response.servicesList)
+    # faCture = list()
     # print("the response hia:")
     # print(response)
-    # for propertyId in response.propertiesList:
-    #     print(propertyId)
-    #     visitingList.append(Properties.query.get(propertyId))
-    # print(visitingList)
-    # return render_template('viewproperties.html', properties=visitingList)
+    # for serviceId in response.servicesList:
+    #     print(serviceId)
+    #     faCture.append(Services.query.get(serviceId))
+    # print(faCture)
+    # return render_template('viewservices.html', services=faCture)
     # for r in response:
     #     print("l item d response houa")
     #     print(r)
@@ -579,43 +579,43 @@ def addtovisitinglist(id):
     #     row = list()
     #     for x in range(len(r)):
     #         row.append(r[x])
-    #     properties.append(row)
-    flash('Property added to visiting list', category='success')
+    #     services.append(row)
+    flash('Service added to facture', category='success')
 
-    return redirect('/viewproperties')
+    return redirect('/viewservices')
 
 
 
-@app.route('/removefromvisitinglist/<id>', methods = ['GET', 'POST'])
-def removefromvisitinglist(id):
+@app.route('/removefromfacture/<id>', methods = ['GET', 'POST'])
+def removefromfacture(id):
 
-    current_user_list = VisitingList.query.get(current_user.id)
+    current_user_list = Facture.query.get(current_user.id)
     print(current_user_list)
     print("list before appending")
-    print(current_user_list.propertiesList)
+    print(current_user_list.servicesList)
     print("list after copying")
     tmp = []
-    for propertyId in current_user_list.propertiesList:
-        tmp.append(propertyId)
+    for serviceId in current_user_list.servicesList:
+        tmp.append(serviceId)
     print(tmp)
     print("list after appending")
 
     tmp.remove(int(id))
     print(tmp)
-    current_user_list.propertiesList = tmp
-    print(current_user_list.propertiesList)
+    current_user_list.servicesList = tmp
+    print(current_user_list.servicesList)
     db.session.commit()
 
     # print("the response hia:")
-    # print(response.propertiesList)
-    # visitingList = list()
+    # print(response.servicesList)
+    # faCture = list()
     # print("the response hia:")
     # print(response)
-    # for propertyId in response.propertiesList:
-    #     print(propertyId)
-    #     visitingList.append(Properties.query.get(propertyId))
-    # print(visitingList)
-    # return render_template('viewproperties.html', properties=visitingList)
+    # for serviceId in response.servicesList:
+    #     print(serviceId)
+    #     faCture.append(Services.query.get(serviceId))
+    # print(faCture)
+    # return render_template('viewservices.html', services=faCture)
     # for r in response:
     #     print("l item d response houa")
     #     print(r)
@@ -623,8 +623,8 @@ def removefromvisitinglist(id):
     #     row = list()
     #     for x in range(len(r)):
     #         row.append(r[x])
-    #     properties.append(row)
-    return redirect('/viewvisitinglist/'+str(current_user.id))
+    #     services.append(row)
+    return redirect('/viewfacture/'+str(current_user.id))
 
 
 #############################################################

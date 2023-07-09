@@ -16,7 +16,7 @@ pip install -r requirements.txt
 ```bash
 python app.py
 ```
-3. Go to `http://127.0.0.1:8080` on your browser.
+3. Go to `http://127.0.0.1:6969` on your browser.
 
 --------------------------------------------------------  
 

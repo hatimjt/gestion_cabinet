@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title> {% block title %} Online Property Rental System Homepage {% endblock %} </title>
+    <title> {% block title %} Online Service Rental System Homepage {% endblock %} </title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dropdown.css') }}">
@@ -71,20 +71,20 @@
 
               </li>
 
-              {% if request.path=="/viewproperties" %}
+              {% if request.path=="/viewservices" %}
               <li class="nav-item active">
               {% else %}
                 <li class="nav-item">
                 {% endif %}
-                <a class="nav-link" href="/viewproperties">View Properties</a>
+                <a class="nav-link" href="/viewservices">View Services</a>
               </li>
 
-                {% if ((request.path=="/createproperty")) %}
+                {% if ((request.path=="/createservice")) %}
                   <li class="nav-item active">
                 {% else %}
                   <li class="nav-item">
                   {% if current_user.user_type=="Owner" %}
-                    <a class="nav-link" href="/createproperty">Add Property</a>
+                    <a class="nav-link" href="/createservice">Add Service</a>
                   {% endif %}
                   </li>
                 {% endif %}
@@ -99,13 +99,13 @@
                 {% endif %}
               </li>
 
-              {% if request.path=="/viewvisitinglist" %}
+              {% if request.path=="/viewfacture" %}
               <li class="nav-item active">
               {% else %}
                 <li class="nav-item">
                 {% endif %}
                 {% if user.is_authenticated == True %}
-                <a class="nav-link" href="/viewvisitinglist/{{user.id}}">Visiting list</a>
+                <a class="nav-link" href="/viewfacture/{{user.id}}">Facture</a>
                 {% endif %}
               </li>
 
