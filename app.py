@@ -193,15 +193,23 @@ def index():
         db.session.commit()
 
 
-        propertya = Properties(description='2 bedroom appartment all inclusive', address='rabatlagdal',  owner='oxy',  email='oxy@cabmed',  phone='0662485142', price='850', pet_friendly="yes")
-        propertyb = Properties(description='1 bedroom + wifi', address='kech',  owner='tuta',  email='tuta@cabmed',  phone='0662154723', price='440', pet_friendly="no")
-        propertyc = Properties(description='studio/bachelor basement', address='temara',  owner='oxy',  email='oxy@cabmed',  phone='0662154724', price='720', pet_friendly="yes")
-        propertyd = Properties(description='3 bedroom appartment + den', address='temara',  owner='tuta',  email='tuta@cabmed',  phone='0662154726', price='1480', pet_friendly="yes")
+        propertya = Properties(description='consultation', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662485142', price='200', pet_friendly="yes")
+        propertyb = Properties(description='doliprane', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154723', price='20', pet_friendly="no")
+        propertyc = Properties(description='x-ray', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154724', price='720', pet_friendly="yes")
+        propertyd = Properties(description='analyse sanguine', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154726', price='1480', pet_friendly="yes")
+        propertye = Properties(description='rappel de controle', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154726', price='0', pet_friendly="yes")
+        propertyf = Properties(description='kenta', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154726', price='100', pet_friendly="yes")
+        propertyg = Properties(description='analyse sanguine', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154726', price='1480', pet_friendly="yes")
+        propertyh = Properties(description='analyse sanguine', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154726', price='1480', pet_friendly="yes")
 
         db.session.add(propertya)
         db.session.add(propertyb)
         db.session.add(propertyc)
         db.session.add(propertyd)
+        db.session.add(propertye)
+        db.session.add(propertyf)
+        db.session.add(propertyg)
+        db.session.add(propertyh)
         db.session.commit()
 
 
@@ -461,34 +469,34 @@ def viewproperties():
     #     flash('Please login first!', category='error')
     # return render_template('login.html')
 
-@app.route('/viewpropertiesbylocation/<location>', methods = ['GET'])
-def viewpropertiesbylocation(location):
-    properties = list()
-    response = Properties.query.filter(Properties.address.contains(location))
-    # response = db.session.execute('SELECT * FROM properties;')
-    print("the response hia:")
-    print(response)
+# @app.route('/viewpropertiesbylocation/<location>', methods = ['GET'])
+# def viewpropertiesbylocation(location):
+#     properties = list()
+#     response = Properties.query.filter(Properties.address.contains(location))
+#     # response = db.session.execute('SELECT * FROM properties;')
+#     print("the response hia:")
+#     print(response)
 
-    for record in response:
-        print("l item d response houa")
-        print(record)
-        print(record.address)
-        properties.append(record)
-    #     properties.append(record)
-        # row = list()
-        # for x in range(len(record)):
-        #     row.append(record[x])
-        # properties.append(row)
-        # print(properties)
-    if len(properties)==0:
-        flash('No properties found at this location.', category='error')
-    return render_template('viewproperties.html', properties=properties)
-    # if current_user.is_authenticated:
-    #     return render_template('viewproperty.html', property=)
-    # else:
-    #     print('Please login first!')
-    #     flash('Please login first!', category='error')
-    # return render_template('login.html')
+#     for record in response:
+#         print("l item d response houa")
+#         print(record)
+#         print(record.address)
+#         properties.append(record)
+#     #     properties.append(record)
+#         # row = list()
+#         # for x in range(len(record)):
+#         #     row.append(record[x])
+#         # properties.append(row)
+#         # print(properties)
+#     if len(properties)==0:
+#         flash('No properties found at this location.', category='error')
+#     return render_template('viewproperties.html', properties=properties)
+#     # if current_user.is_authenticated:
+#     #     return render_template('viewproperty.html', property=)
+#     # else:
+#     #     print('Please login first!')
+#     #     flash('Please login first!', category='error')
+#     # return render_template('login.html')
 
 
 @app.route('/deleteproperty/<id>', methods = ['GET', 'POST'])
