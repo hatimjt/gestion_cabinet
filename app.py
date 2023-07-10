@@ -42,7 +42,7 @@ db.init_app(app)
 class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), unique=True, nullable=False)
-    user_type = db.Column(db.String(8), unique=False, nullable=False) # -> admin, customer, owner, agent
+    user_type = db.Column(db.String(255), unique=False, nullable=False) # -> admin, customer, doctor, assistant
     name = db.Column(db.String(255), unique=False, nullable=False)
     surname = db.Column(db.String(255), unique=False, nullable=False)
     email = db.Column(db.String(255), unique=False, nullable=False)
@@ -61,7 +61,7 @@ class Services(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(255), unique=False, nullable=False)
     address = db.Column(db.String(255), unique=False, nullable=False)
-    owner = db.Column(db.String(255), unique=False, nullable=False)
+    doctor = db.Column(db.String(255), unique=False, nullable=False)
     email = db.Column(db.String(255), unique=False, nullable=False)
     phone = db.Column(db.String(255), unique=False, nullable=False)
     price = db.Column(db.String(255), unique=False, nullable=False)
@@ -87,8 +87,8 @@ class AccountForm(Form):
     email = StringField('Email', [validators.Length(min=5, max=50)])
     password = PasswordField('New Password', [validators.DataRequired(), validators.EqualTo('confirm', message='Passwords must match')])
     confirm  = PasswordField('Repeat Password')
-    user_type = RadioField('user_type', choices=[('customer','Customer'),('owner','Owner'),('agent','Agent')])
-    allocation_max = StringField('maxRent', [validators.Length(min=1, max=10)])
+    user_type = RadioField('user_type', choices=[('customer','Customer'),('doctor','Doctor'),('assistant','Assistant')])
+    allocation_max = StringField('allocationmax', [validators.Length(min=1, max=10)])
 
     # validators.DataRequired() / InputRequired()
 
@@ -96,7 +96,7 @@ class AccountForm(Form):
 class ServiceForm(Form):
     description = StringField('description', [validators.Length(min=1, max=50)])
     address = StringField('address', [validators.Length(min=1, max=50)])
-    owner = StringField('owner', [validators.Length(min=1, max=50)])
+    doctor = StringField('doctor', [validators.Length(min=1, max=50)])
     email = StringField('email', [validators.Length(min=1, max=50)])
     phone = StringField('phone', [validators.Length(min=1, max=50)])
     price = StringField('price', [validators.Length(min=1, max=50)])
@@ -165,15 +165,15 @@ def index():
 
         admin = Users(user_type='admin', username = 'admin', name='admin', surname='admin', email='admin@cabmed', password=generate_password_hash("password", method='sha256'), allocation_max='1000$')
         adminVL = Facture(userId= 1, servicesList=[] )
-        sparky = Users(user_type='Agent', username = 'sparky', name='sparky', surname='onlive', email='sparky@cabmed', password=generate_password_hash("password", method='sha256'), allocation_max='1000$')
+        sparky = Users(user_type='assistant', username = 'sparky', name='sparky', surname='onlive', email='sparky@cabmed', password=generate_password_hash("password", method='sha256'), allocation_max='1000$')
         sparkyVL = Facture(userId= 2, servicesList=[] )
-        tuta = Users(user_type='Owner', username='tuta', name='tuta', surname='nota', email='tuta@cabmed', password=generate_password_hash("password", method='sha256'), allocation_max='1000$')
+        tuta = Users(user_type='doctor', username='tuta', name='tuta', surname='nota', email='tuta@cabmed', password=generate_password_hash("password", method='sha256'), allocation_max='1000$')
         tutaVL = Facture(userId= 3, servicesList=[] )
-        jado = Users(user_type='Customer', username='jado', name='jado', surname='lpikos', email='jado@cabmed', password=generate_password_hash("password", method='sha256'), allocation_max='1000$')
+        jado = Users(user_type='customer', username='jado', name='jado', surname='lpikos', email='jado@cabmed', password=generate_password_hash("password", method='sha256'), allocation_max='1000$')
         jadoVL = Facture(userId= 4, servicesList=[] )
-        oxy = Users(user_type='Owner', username='oxy', name='oxy', surname='doxy', email='oxy@cabmed', password=generate_password_hash("password", method='sha256'), allocation_max='1000$')
+        oxy = Users(user_type='Doctor', username='oxy', name='oxy', surname='doxy', email='oxy@cabmed', password=generate_password_hash("password", method='sha256'), allocation_max='1000$')
         oxyVL = Facture(userId= 5, servicesList=[] )
-        hatim = Users(user_type='Customer', username='hatim', name='hatim', surname='jt', email='hatim@cabmed', password=generate_password_hash("password", method='sha256'), allocation_max='1000$')
+        hatim = Users(user_type='customer', username='hatim', name='hatim', surname='jt', email='hatim@cabmed', password=generate_password_hash("password", method='sha256'), allocation_max='1000$')
         hatimVL = Facture(userId= 6, servicesList=[1,2] )
 
         db.session.add(admin)
@@ -193,14 +193,14 @@ def index():
         db.session.commit()
 
 
-        servicea = Services(description='consultation', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662485142', price='200', ramed="yes")
-        serviceb = Services(description='doliprane', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154723', price='20', ramed="no")
-        servicec = Services(description='x-ray', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154724', price='720', ramed="yes")
-        serviced = Services(description='analyse sanguine', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154726', price='1480', ramed="yes")
-        servicee = Services(description='rappel de controle', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154726', price='0', ramed="yes")
-        servicef = Services(description='kenta', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154726', price='100', ramed="yes")
-        serviceg = Services(description='analyse sanguine', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154726', price='1480', ramed="yes")
-        serviceh = Services(description='analyse sanguine', address='cabmedigi',  owner='admin',  email='admin@cabmed',  phone='0662154726', price='1480', ramed="yes")
+        servicea = Services(description='consultation', address='cabmedigi',  doctor='admin',  email='admin@cabmed',  phone='0662485142', price='200', ramed="yes")
+        serviceb = Services(description='doliprane', address='cabmedigi',  doctor='admin',  email='admin@cabmed',  phone='0662154723', price='20', ramed="no")
+        servicec = Services(description='x-ray', address='cabmedigi',  doctor='admin',  email='admin@cabmed',  phone='0662154724', price='720', ramed="yes")
+        serviced = Services(description='analyse sanguine', address='cabmedigi',  doctor='admin',  email='admin@cabmed',  phone='0662154726', price='1480', ramed="yes")
+        servicee = Services(description='rappel de controle', address='cabmedigi',  doctor='admin',  email='admin@cabmed',  phone='0662154726', price='0', ramed="yes")
+        servicef = Services(description='kenta', address='cabmedigi',  doctor='admin',  email='admin@cabmed',  phone='0662154726', price='100', ramed="yes")
+        serviceg = Services(description='analyse sanguine', address='cabmedigi',  doctor='admin',  email='admin@cabmed',  phone='0662154726', price='1480', ramed="yes")
+        serviceh = Services(description='analyse sanguine', address='cabmedigi',  doctor='admin',  email='admin@cabmed',  phone='0662154726', price='1480', ramed="yes")
 
         db.session.add(servicea)
         db.session.add(serviceb)
@@ -405,13 +405,13 @@ def service(id):
     #     for x in range(len(r)):
     #         row.append(r[x])
     #     services.append(row)
-    return render_template('service.html', id=servicea.id, description=servicea.description, address=servicea.address,  owner=servicea.owner,  email=servicea.email,  phone=servicea.phone, price=servicea.price, ramed=servicea.ramed)
+    return render_template('service.html', id=servicea.id, description=servicea.description, address=servicea.address,  doctor=servicea.doctor,  email=servicea.email,  phone=servicea.phone, price=servicea.price, ramed=servicea.ramed)
 
 @app.route('/createservice', methods = ['GET', 'POST'])
 def createservice():
     form = ServiceForm(request.form)
     if request.method == 'POST' and form.validate():
-        service = Services(description=form.description.data, address=form.address.data,  owner=form.owner.data,  email=form.email.data,  phone=form.phone.data, price=form.price.data, ramed=form.ramed.data)
+        service = Services(description=form.description.data, address=form.address.data,  doctor=form.doctor.data,  email=form.email.data,  phone=form.phone.data, price=form.price.data, ramed=form.ramed.data)
         db.session.add(service)
         db.session.commit()
         # do not log in automatically
@@ -431,7 +431,7 @@ def updateservice(id):
     if request.method == 'POST' and form.validate():
         servicea.description=form.description.data
         servicea.address=form.address.data
-        servicea.owner=form.owner.data
+        servicea.doctor=form.doctor.data
         servicea.email=form.email.data
         servicea.phone=form.phone.data
         servicea.price=form.price.data
@@ -444,7 +444,7 @@ def updateservice(id):
         return redirect('/viewaccount')
     elif request.method == 'POST' and not form.validate():
         flash('Input error.. try again!', category='error')
-    return render_template('updateservice.html', form=form,  old_id=servicea.id, old_description=servicea.description, old_address=servicea.address,  old_owner=servicea.owner,  old_email=servicea.email,  old_phone=servicea.phone, old_price=servicea.price, old_ramed=servicea.ramed)
+    return render_template('updateservice.html', form=form,  old_id=servicea.id, old_description=servicea.description, old_address=servicea.address,  old_doctor=servicea.doctor,  old_email=servicea.email,  old_phone=servicea.phone, old_price=servicea.price, old_ramed=servicea.ramed)
 
 
 @app.route('/viewservices', methods = ['GET'])
