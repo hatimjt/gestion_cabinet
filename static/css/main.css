@@ -164,7 +164,10 @@ li a:hover {
 }
 
 body {
-    background: #eee
+    background: #eee;
+    /* background-image: url('https://www.mydesignoffice.com/media/cache/blog_banner/media/image/89/e9/307994512bad51f5db1210824cab.jpg');
+    background-repeat: no-repeat;
+    background-size: 100%; */
 }
 
 .ratings i {

@@ -193,14 +193,14 @@ def index():
         db.session.commit()
 
 
-        servicea = Services(description='consultation', address='cabmedigi',  doctor='admin',  email='admin@cabmed',  phone='0662485142', price='200', ramed="yes")
+        servicea = Services(description='consultation', address='cabmedigi',  doctor='admin',  email='admin@cabmed',  phone='0662485142', price='30', ramed="yes")
         serviceb = Services(description='doliprane', address='cabmedigi',  doctor='admin',  email='admin@cabmed',  phone='0662154723', price='20', ramed="no")
         servicec = Services(description='x-ray', address='cabmedigi',  doctor='admin',  email='admin@cabmed',  phone='0662154724', price='720', ramed="yes")
-        serviced = Services(description='analyse sanguine', address='cabmedigi',  doctor='admin',  email='admin@cabmed',  phone='0662154726', price='1480', ramed="yes")
+        serviced = Services(description='analyse sanguine', address='cabmedigi',  doctor='admin',  email='admin@cabmed',  phone='0662154726', price='200', ramed="yes")
         servicee = Services(description='rappel de controle', address='cabmedigi',  doctor='admin',  email='admin@cabmed',  phone='0662154726', price='0', ramed="yes")
         servicef = Services(description='kenta', address='cabmedigi',  doctor='admin',  email='admin@cabmed',  phone='0662154726', price='100', ramed="yes")
-        serviceg = Services(description='analyse sanguine', address='cabmedigi',  doctor='admin',  email='admin@cabmed',  phone='0662154726', price='1480', ramed="yes")
-        serviceh = Services(description='analyse sanguine', address='cabmedigi',  doctor='admin',  email='admin@cabmed',  phone='0662154726', price='1480', ramed="yes")
+        serviceg = Services(description='analyse vasculaire', address='cabmedigi',  doctor='admin',  email='admin@cabmed',  phone='0662154726', price='150', ramed="yes")
+        serviceh = Services(description='analyse generale', address='cabmedigi',  doctor='admin',  email='admin@cabmed',  phone='0662154722', price='120', ramed="yes")
 
         db.session.add(servicea)
         db.session.add(serviceb)
